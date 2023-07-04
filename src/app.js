@@ -5,7 +5,16 @@ const { exportClient, Port } = require('./config.js');
 
 const app = express();
 
-app.use(cors());
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 
+}
+
+app.use(cors(corsOptions));
+
+
+// Middleware
+app.use(express.json());
 
 const client = new Client(exportClient);
 

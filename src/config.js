@@ -6,7 +6,8 @@ module.exports = {
         password: 'YT6ZwWghepVjPLs48mCb',
         port: 7858,
     },
-    Port : process.env.PORT || 3000
+    Port : process.env.PORT || 3000,
+    connectionTimeoutMillis: 5000,
   };
   
 

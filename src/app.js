@@ -6,7 +6,7 @@ const { exportClient, Port } = require('./config.js');
 const app = express();
 
 var corsOptions = {
-  origin: '*',
+  origin: process.env.URL_ALLOWED || 'http://localhost:3000',
   optionsSuccessStatus: 200 
 }
 

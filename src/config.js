@@ -7,7 +7,7 @@ module.exports = {
         port: 7858,
     },
     Port : process.env.PORT || 3000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: process.env.CONNECTION_TIMEOUT || 10000,
   };
   
 

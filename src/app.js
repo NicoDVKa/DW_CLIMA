@@ -44,11 +44,11 @@ app.get('/anio', (req, res) => {
 
 
 // !Consulta por las provincias de la lookup
-app.get('/provincia', (req, res) => {
+app.get('/provincia', async (req, res) => {
   
   let {year} = req.query;
 
-  client.query(
+  await client.query(
                `
                SELECT p.id, p."desc", p.codigo
                FROM public.lk_provincia as p 
@@ -70,9 +70,9 @@ app.get('/provincia', (req, res) => {
 
 
 // !Se trae los datos de la temperatura anual de la provincia. Además, tiene un filtro por año.
-app.get('/provincia/temperatura', (req, res) => {
+app.get('/provincia/temperatura', async (req, res) => {
   let {year}   = req.query;
-  client.query(
+  await client.query(
                `SELECT lp.id , lp."desc" , bt.anio,  max(bt.temperatura) as temperatura
                 FROM public.bt_medicion as bt
                 inner join  lk_provincia as lp on lp.id = bt.provincia_id
@@ -91,9 +91,9 @@ app.get('/provincia/temperatura', (req, res) => {
 
 
 // !Se trae el nombre de los cultivos que hay en la tabla base. Además, tiene filtro por año. (Sirve para filtrado)
-app.get('/cultivo', (req, res) => {
+app.get('/cultivo', async (req, res) => {
   let {year, province} = req.query;
-  client.query(
+  await client.query(
                `
                SELECT c.id, c."desc", c.codigo
                FROM public.lk_cultivo as c
@@ -114,10 +114,10 @@ app.get('/cultivo', (req, res) => {
 
 
 // !Se trae las mediciones de los cultivos que hay en la tabla base. Además, tiene filtro por año e id del cultivo.
-app.get('/cultivo/medicion/:year', (req, res) => {
+app.get('/cultivo/medicion/:year', async (req, res) => {
   let {province, crop} = req.query;
   let {year} = req.params;
-  client.query(
+  await client.query(
                `
                SELECT lc.id, lc."desc" as cultivo_desc,lp.desc as provincia_desc, avg(bt.rendimiento) as rendimiento , avg(bt.produccion) as produccion, avg(bt. sup_sembrada) as sup_sembrada , avg(bt.sup_cosechada) as sup_cosechada
                FROM public.bt_medicion as bt
@@ -140,9 +140,9 @@ app.get('/cultivo/medicion/:year', (req, res) => {
 
 
 
-app.get('/cultivo/medicion', (req, res) => {
+app.get('/cultivo/medicion', async (req, res) => {
   let {province,crop} = req.query;
-  client.query(
+  await client.query(
                `
                SELECT lc.id, lc."desc" as cultivo_desc, ${province? 'lp.desc as provincia_desc ,': ''} bt.anio,  avg(bt.rendimiento) as rendimiento , avg(bt.produccion) as produccion, avg(bt. sup_sembrada) as sup_sembrada , avg(bt.sup_cosechada) as sup_cosechada
                FROM public.bt_medicion as bt

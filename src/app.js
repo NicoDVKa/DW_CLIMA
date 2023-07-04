@@ -45,13 +45,15 @@ app.get('/anio', (req, res) => {
 
 // !Consulta por las provincias de la lookup
 app.get('/provincia', (req, res) => {
+  
+  let {year} = req.query;
 
   client.query(
                `
                SELECT p.id, p."desc", p.codigo
                FROM public.lk_provincia as p 
                inner join bt_medicion as bm on bm.provincia_id =  p.id 
-               where  not bm.cultivo_id = 0  
+               where  not bm.cultivo_id = 0  ${year? 'and bm.anio='+year: ''}
                group  by p.id 
                order by p.id ;
                `
@@ -64,6 +66,7 @@ app.get('/provincia', (req, res) => {
     }
   });
 });
+
 
 
 // !Se trae los datos de la temperatura anual de la provincia. Además, tiene un filtro por año.
